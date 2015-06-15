@@ -65,7 +65,8 @@ class seoController extends seo
 		$piece->url = getFullUrl('');
 		if($config->use_menu_desc === 'Y' && $output->data->desc!='')
 		{
-			$piece->description = htmlentities($output->data->desc);
+			$desc = explode('|', $output->data->desc);
+			$piece->description = htmlentities($desc[0]);
 		}
 		else
 		{
