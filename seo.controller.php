@@ -20,7 +20,7 @@ class seoController extends seo
 
 		if ($config->use_optimize_title == 'Y') {
 			$title = array();
-			if ($piece['[:document_title:]']) {
+			if ($piece['[:document_title:]'] && !$is_index) {
 				$title[] = $piece['[:document_title:]'];
 				$title[] = $piece['[:module_title:]'];
 				$title[] = $piece['[:site_name:]'];
