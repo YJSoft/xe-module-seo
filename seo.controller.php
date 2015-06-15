@@ -54,12 +54,24 @@ class seoController extends seo
 		$is_article = false;
 		$is_index = ($current_module_info->module_srl == $site_module_info->module_srl) ? true : false;
 
+		$args->url = $current_module_info->mid;
+		$args->site_srl = $site_module_info->site_srl;
+		$args->is_shortcut = 'N';
+		$output = executeQuery('menu.getMenuItemByUrl', $args);
+
 		$piece = new stdClass;
 		$piece->document_title = null;
 		$piece->type = 'website';
 		$piece->url = getFullUrl('');
+		if($config->use_menu_desc === 'Y' && $output->data->desc!='')
+		{
+			$piece->description = htmlentities($output->data->desc);
+		}
+		else
+		{
+			$piece->description = $config->site_description;
+		}
 		$piece->title = Context::getBrowserTitle();
-		$piece->description = $config->site_description;
 		$piece->keywords = $config->site_keywords;
 		$piece->image = array();
 		$piece->author = null;
@@ -132,7 +144,7 @@ class seoController extends seo
 
 		$this->applySEO();
 
-		if ($config->use_optimize_title == 'Y') Context::setBrowserTitle($piece->title);
+		if ($config->use_optimize_title === 'Y') Context::setBrowserTitle($piece->title);
 	}
 }
 /* !End of file */
