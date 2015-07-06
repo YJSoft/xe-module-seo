@@ -45,6 +45,7 @@ class seoController extends seo
 		if (Context::get('module') == 'admin') return;
 
 		$oModuleModel = getModel('module');
+		$oModuleController = getController('module');
 		$config = $this->getConfig();
 
 		$logged_info = Context::get('logged_info');
@@ -71,7 +72,7 @@ class seoController extends seo
 
 		if($config->use_menu_desc === 'Y' && $desc[0]!='')
 		{
-			$piece->description = htmlentities($desc[0]);
+			$piece->description = htmlentities($oModuleController->replaceDefinedLangCode($desc[0]));
 		}
 		else
 		{
