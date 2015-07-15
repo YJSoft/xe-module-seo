@@ -73,7 +73,7 @@ class seoController extends seo
 		if($config->use_menu_desc === 'Y' && $desc[0]!='')
 		{
 			$oModuleController->replaceDefinedLangCode($desc[0],TRUE);
-			$piece->description = htmlentities($desc[0]);
+			$piece->description = htmlspecialchars($desc[0], ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
 		}
 		else
 		{
