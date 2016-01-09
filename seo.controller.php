@@ -55,6 +55,7 @@ class seoController extends seo
 		$is_article = false;
 		$is_index = ($current_module_info->module_srl == $site_module_info->module_srl) ? true : false;
 
+		$args = new stdClass();
 		$args->url = $current_module_info->mid;
 		$args->site_srl = $site_module_info->site_srl;
 		$args->is_shortcut = 'N';
