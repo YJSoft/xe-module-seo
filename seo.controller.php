@@ -65,10 +65,17 @@ class seoController extends seo
 		$piece->document_title = null;
 		$piece->type = 'website';
 		$piece->url = getFullUrl('');
+		
+		if(!$output->data)
+		{
+			$output->data = stdClass();
+		}
+		
 		if(!$output->data->desc)
 		{
 			$output->data->desc = '';
 		}
+		
 		$desc = explode('|', $output->data->desc);
 
 		if($config->use_menu_desc === 'Y' && $desc[0]!='')
