@@ -69,10 +69,6 @@ class seoController extends seo
 		if(!$output->data)
 		{
 			$output->data = new stdClass();
-		}
-		
-		if(!$output->data->desc)
-		{
 			$output->data->desc = '';
 		}
 		
