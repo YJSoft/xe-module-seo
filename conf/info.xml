@@ -1,11 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module version="0.2">
 	<title xml:lang="ko">SEO</title>
-	<description xml:lang="ko">XE 검색엔진 최적화</description>
-	<version>0.3.2</version>
-	<date>2015-07-15</date>
-	<license>Public Domain</license>
-	<author link="https://github.com/xe-public">
-		<name xml:lang="ko">XE Public</name>
+	<description xml:lang="ko">검색엔진 최적화</description>
+	<version>1.8.0-menudesc</version>
+	<date>2016-03-03</date>
+	<license>MIT</license>
+	<author email_address="bnufactory@gmail.com">
+		<name xml:lang="ko">BNU</name>
+		<name xml:lang="vi">BNU</name>
+		<name xml:lang="zh-CN">BNU</name>
+		<name xml:lang="jp">BNU</name>
+		<name xml:lang="en">BNU</name>
+		<name xml:lang="es">BNU</name>
+		<name xml:lang="ru">BNU</name>
+		<name xml:lang="zh-TW">BNU</name>
+		<name xml:lang="tr">BNU</name>
+	</author>
+	<author email_address="developers@xpressengine.com" link="https://www.xpressengine.com/">
+		<name xml:lang="ko">NAVER</name>
+		<name xml:lang="vi">NAVER</name>
+		<name xml:lang="zh-CN">NAVER</name>
+		<name xml:lang="jp">NAVER</name>
+		<name xml:lang="en">NAVER</name>
+		<name xml:lang="es">NAVER</name>
+		<name xml:lang="ru">NAVER</name>
+		<name xml:lang="zh-TW">NAVER</name>
+		<name xml:lang="tr">NAVER</name>
+	</author>
+	<author email_address="yjsoft@yjsoft.pe.kr" link="http://yjsoft.pe.kr/">
+		<name xml:lang="ko">YJSoft</name>
+		<name xml:lang="vi">YJSoft</name>
+		<name xml:lang="zh-CN">YJSoft</name>
+		<name xml:lang="jp">YJSoft</name>
+		<name xml:lang="en">YJSoft</name>
+		<name xml:lang="es">YJSoft</name>
+		<name xml:lang="ru">YJSoft</name>
+		<name xml:lang="zh-TW">YJSoft</name>
+		<name xml:lang="tr">YJSoft</name>
 	</author>
 </module>
