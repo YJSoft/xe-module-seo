@@ -184,12 +184,47 @@ class seoController extends seo
 		}
 
 		$piece->title = $this->getBrowserTitle($piece->document_title);
-
-		if($oCacheHandler->isSupport()) {
-			$cache_key = 'seo:site_image';
-			$site_image = $oCacheHandler->get($cache_key);
-			if($site_image) {
-				$site_image['url'] = $config->site_image_url;
+		
+		//if site image exists
+		if($config->site_image_url) {
+			//if cache is supported, try to use it
+			if($oCacheHandler->isSupport())
+			{
+				$cache_key = 'seo:site_image';
+				$site_image = $oCacheHandler->get($cache_key);
+				
+				//if cache exists,use cache
+				if($site_image)
+				{
+					$site_image['url'] = $config->site_image_url;
+				}
+				//else(no cache exists), re-generate cache
+				else
+				{
+					list($width, $height) = @getimagesize(_XE_PATH_ . 'files/attach/site_image/' . $config->site_image);
+					$site_image_dimension = array(
+						'width' => $width,
+						'height' => $height
+					);
+					$cache_key = 'seo:site_image';
+					$oCacheHandler->put($cache_key, $site_image_dimension);
+					
+					$site_image = array(
+						'url' => $config->site_image_url,
+						'width' => $width,
+						'height' => $height
+					);
+				}
+			}
+			//do not use cache if no cache available
+			else
+			{
+				list($width, $height) = @getimagesize(_XE_PATH_ . 'files/attach/site_image/' . $config->site_image);
+				$site_image = array(
+					'url' => $config->site_image_url,
+					'width' => $width,
+					'height' => $height
+				);
 			}
 			$piece->image[] = $site_image;
 		}
