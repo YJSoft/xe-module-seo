@@ -14,6 +14,7 @@ class seoAdminController extends seo
 			$config->site_name = $vars->site_name;
 			$config->site_slogan = $vars->site_slogan;
 			$config->site_description = $vars->site_description;
+			$config->use_menu_desc = $vars->use_menu_desc;
 			$config->site_keywords = $vars->site_keywords;
 			if ($vars->site_image) {
 				$path = _XE_PATH_ . 'files/attach/site_image/';

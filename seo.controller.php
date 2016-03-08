@@ -63,6 +63,7 @@ class seoController extends seo
 		);
 
 		$oModuleModel = getModel('module');
+		$oModuleController = getController('module');
 		$config = $this->getConfig();
 
 		$logged_info = Context::get('logged_info');
@@ -72,17 +73,38 @@ class seoController extends seo
 		$is_article = false;
 		$single_image = false;
 		$is_index = ($current_module_info->module_srl == $site_module_info->module_srl) ? true : false;
-
+		
 		$piece = new stdClass;
 		$piece->document_title = null;
 		$piece->type = 'website';
 		$piece->url = getFullUrl('');
 		$piece->title = Context::getBrowserTitle();
-		$piece->description = $config->site_description;
 		$piece->keywords = $config->site_keywords;
 		$piece->tags = array();
 		$piece->image = array();
 		$piece->author = null;
+		
+		$args_desc = new stdClass();
+		$args_desc->url = $current_module_info->mid;
+		$args_desc->site_srl = $site_module_info->site_srl;
+		$args_desc->is_shortcut = 'N';
+		$output = executeQuery('menu.getMenuItemByUrl', $args_desc);
+		
+		if(!$output->data)
+		{
+			$output->data = new stdClass();
+			$output->data->desc = '';
+		}
+		
+		if($config->use_menu_desc === 'Y' && $desc)
+		{
+			$oModuleController->replaceDefinedLangCode($desc[0],TRUE);
+			$piece->description = htmlspecialchars($desc[0], ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
+		}
+		else
+		{
+			$piece->description = $config->site_description;
+		}
 
 		if(stristr($_SERVER['HTTP_USER_AGENT'], 'facebookexternalhit') != FALSE) {
 			$single_image = true;
