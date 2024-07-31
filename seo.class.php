@@ -19,13 +19,36 @@ class seo extends ModuleObject
 	{
 		$oModuleModel = getModel('module');
 		$config = $oModuleModel->getModuleConfig('seo');
+
+		require_once(_XE_PATH_ . 'libs/idna_convert/idna_convert.class.php');
+		$IDN = new idna_convert(array('idn_version' => 2008));
+		$request_uri = $IDN->encode(Context::get('request_uri'));
+
 		if (!$config) $config = new stdClass;
+		if (!$config->enable) $config->enable = 'Y';
 		if (!$config->use_optimize_title) $config->use_optimize_title = 'N';
 		if (!$config->ga_except_admin) $config->ga_except_admin = 'N';
 		if (!$config->ga_track_subdomain) $config->ga_track_subdomain = 'N';
 		if ($config->site_image) 
 		{
-			$config->site_image_url = Context::get('request_uri') . 'files/attach/site_image/' . $config->site_image;
+			$config->site_image_url = $request_uri . 'files/attach/site_image/' . $config->site_image;
+
+			$oCacheHandler = CacheHandler::getInstance('object', NULL, TRUE);
+			if($oCacheHandler->isSupport()) {
+				$site_image = false;
+				$cache_key = 'seo:site_image';
+				$site_image = $oCacheHandler->get($cache_key);
+				if(!$site_image) {
+					$path = _XE_PATH_ . 'files/attach/site_image/';
+					list($width, $height) = @getimagesize($path . $config->site_image);
+					$site_image_dimension = array(
+						'width' => $width,
+						'height' => $height
+					);
+					$cache_key = 'seo:site_image';
+					$oCacheHandler->put($cache_key, $site_image_dimension);
+				}
+			}
 		}
 
 		return $config;
@@ -107,15 +130,19 @@ NASCRIPT;
 
 	function moduleInstall()
 	{
-		return new Object();
+		return $this->makeObject();
 	}
 
 	function checkUpdate()
 	{
 		$oModuleModel = getModel('module');
 
-		foreach ($this->triggers as $trigger) {
-			if (!$oModuleModel->getTrigger($trigger[0], $trigger[1], $trigger[2], $trigger[3], $trigger[4])) return TRUE;
+		$seo_config = $this->getConfig();
+
+		if($seo_config->enable === 'Y') {
+			foreach ($this->triggers as $trigger) {
+				if (!$oModuleModel->getTrigger($trigger[0], $trigger[1], $trigger[2], $trigger[3], $trigger[4])) return TRUE;
+			}
 		}
 
 		return FALSE;
@@ -126,13 +153,17 @@ NASCRIPT;
 		$oModuleModel = getModel('module');
 		$oModuleController = getController('module');
 
-		foreach ($this->triggers as $trigger) {
-			if (!$oModuleModel->getTrigger($trigger[0], $trigger[1], $trigger[2], $trigger[3], $trigger[4])) {
-				$oModuleController->insertTrigger($trigger[0], $trigger[1], $trigger[2], $trigger[3], $trigger[4]);
+		$seo_config = $this->getConfig();
+
+		if($seo_config->enable === 'Y') {
+			foreach ($this->triggers as $trigger) {
+				if (!$oModuleModel->getTrigger($trigger[0], $trigger[1], $trigger[2], $trigger[3], $trigger[4])) {
+					$oModuleController->insertTrigger($trigger[0], $trigger[1], $trigger[2], $trigger[3], $trigger[4]);
+				}
 			}
 		}
 
-		return new Object(0, 'success_updated');
+		return $this->makeObject(0, 'success_updated');
 	}
 
 	function moduleUninstall()
@@ -143,7 +174,12 @@ NASCRIPT;
 			$oModuleController->deleteTrigger($trigger[0], $trigger[1], $trigger[2], $trigger[3], $trigger[4]);
 		}
 
-		return new Object();
+		return $this->makeObject();
+	}
+
+	public function makeObject($code = 0, $message = 'success')
+	{
+		return class_exists('BaseObject') ? new BaseObject($code, $message) : new Object($code, $message);
 	}
 }
 /* !End of file */
